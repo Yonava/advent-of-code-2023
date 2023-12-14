@@ -15,13 +15,16 @@ const allowance = {
 }
 
 // part 1
-// console.log(bags.reduce((acc, bag, index) => {
-//   const valid = bag.every((round) => round.every(([quant, color]) => allowance[color] >= quant))
-//   return valid ? acc + index + 1 : acc
-// }, 0))
-
-// part 2
 console.log(bags.reduce((acc, bag, index) => {
   const valid = bag.every((round) => round.every(([quant, color]) => allowance[color] >= quant))
   return valid ? acc + index + 1 : acc
+}, 0))
+
+// part 2
+console.log(bags.reduce((acc, bag) => {
+  const colors = { red: 0, blue: 0, green: 0 }
+  bag.forEach((round) => round.forEach(([quant, color]) => {
+    colors[color] = Math.max(colors[color], quant)
+  }))
+  return acc + colors.red * colors.blue * colors.green;
 }, 0))

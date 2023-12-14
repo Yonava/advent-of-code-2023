@@ -17,12 +17,16 @@ const isNum = (char) => !isNaN(parseInt(char))
 
 const decode = (str) => {
   const strArr = str.split('')
+
+  // start of part 2 block
   words.forEach((word) => {
     const firstIndex = str.indexOf(word)
     if (firstIndex === -1) return
     strArr[firstIndex] = wordMap[word]
     strArr[str.lastIndexOf(word)] = wordMap[word]
   })
+  // end of part 2 block
+
   return parseInt(strArr.find(isNum) + strArr.findLast(isNum))
 }
 
