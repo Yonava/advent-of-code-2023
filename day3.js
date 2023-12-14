@@ -30,7 +30,7 @@ const neighbors = [
 
 let output = 0
 
-// remove all adjacency
+// part 1
 s.forEach((line, lIndex) => line.forEach((char, cIndex) => {
   if (isNum(char) || char === '.') return
   neighbors.forEach(([x, y]) => {
@@ -42,4 +42,18 @@ s.forEach((line, lIndex) => line.forEach((char, cIndex) => {
   })
 }))
 
-console.log(output)
+
+// part 2
+let gears = []
+s.forEach((line, lIndex) => line.forEach((char, cIndex) => {
+  if (char !== '*') return
+  neighbors.forEach(([x, y]) => {
+    const [row, col] = [lIndex + x, cIndex + y]
+    if (outOfBounds(row, col) || !isNum(s[row][col])) return
+    dfs(row, col)
+    gears.push(parseInt(numBuff.filter(i => i).join('')))
+    numBuff = []
+  })
+  if (gears.length === 2) output += (gears[0] * gears[1])
+  gears = []
+}))
