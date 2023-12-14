@@ -13,7 +13,6 @@ const wordMap = {
 }
 
 const words = Object.keys(wordMap)
-
 const isNum = (char) => !isNaN(parseInt(char))
 
 const decode = (str) => {
@@ -28,5 +27,4 @@ const decode = (str) => {
 }
 
 const compute = (input) => input.reduce((acc, curr) => decode(curr) + acc, 0)
-
 console.log(compute(dayOne.split('\n')))
