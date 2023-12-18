@@ -12,11 +12,18 @@ const map = Array.from(pMap).map(i => i[0]).reduce((m, loc) => m.set(loc, seq.re
   return pMap.get(curr)[mv == 'L' ? 0 : 1]
 }, loc)), new Map())
 
-let [start, end] = ['AAA', 'ZZZ']
-let out = 0
-while (start !== end) {
-  start = map.get(start)
-  out += seq.length
+const findFirstEndWithZ = (start) => {
+  let steps = 0;
+  let location = start
+  while (!location.endsWith('Z')) {
+    location = map.get(location)
+    steps++
+  }
+  return steps
 }
 
-console.log(out)
+const lcm = (a, b) => (a * b) / gcd(a, b);
+const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+
+const out = Array.from(pMap).map(i => i[0]).filter(loc => loc.endsWith('A')).map(findFirstEndWithZ)
+console.log(out.reduce(lcm) * seq.length)
