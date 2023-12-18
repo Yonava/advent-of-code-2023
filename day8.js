@@ -1,4 +1,5 @@
 const { dayEight, dayEightSm } = require('./inputs')
+const PART_2 = true
 
 const seq = dayEight.split('\n').shift().split('')
 const rawMap = dayEight.split('\n').slice(2)
@@ -12,18 +13,28 @@ const map = Array.from(pMap).map(i => i[0]).reduce((m, loc) => m.set(loc, seq.re
   return pMap.get(curr)[mv == 'L' ? 0 : 1]
 }, loc)), new Map())
 
-const findFirstEndWithZ = (start) => {
-  let steps = 0;
-  let location = start
-  while (!location.endsWith('Z')) {
-    location = map.get(location)
+const getSteps = (start, cond) => {
+  let steps = 0
+  while (!cond(start)) {
+    start = map.get(start)
     steps++
   }
   return steps
 }
 
-const lcm = (a, b) => (a * b) / gcd(a, b);
-const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+const p1 = () => getSteps('AAA', (s) => s === 'ZZZ')
 
-const out = Array.from(pMap).map(i => i[0]).filter(loc => loc.endsWith('A')).map(findFirstEndWithZ)
-console.log(out.reduce(lcm) * seq.length)
+const p2 = () => {
+  const lcm = (a, b) => (a * b) / gcd(a, b);
+  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+
+  return Array.from(pMap)
+    .map(i => i[0])
+    .filter(loc => loc.endsWith('A'))
+    .map((loc => getSteps(loc, (s) => s.endsWith('Z'))))
+    .reduce(lcm)
+}
+
+const out = (PART_2 ? p2() : p1()) * seq.length
+
+console.log(out)
