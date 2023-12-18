@@ -12,9 +12,10 @@ const map = Array.from(pMap).map(i => i[0]).reduce((m, loc) => m.set(loc, seq.re
   return pMap.get(curr)[mv == 'L' ? 0 : 1]
 }, loc)), new Map())
 
-let currentLocation = 'AAA'
-while (currentLocation !== 'ZZZ') {
-  currentLocation = map.get(currentLocation)
+let [start, end] = ['AAA', 'ZZZ']
+let out = 0
+while (start !== end) {
+  start = map.get(start)
   out += seq.length
 }
 
