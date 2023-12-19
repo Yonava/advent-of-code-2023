@@ -10,15 +10,11 @@ const pMap = rawMap.reduce((acc, curr) => {
 }, new Map())
 
 const map = Array.from(pMap).map(i => i[0]).reduce((m, loc) => m.set(loc, seq.reduce((curr, mv) => {
-  return pMap.get(curr)[mv == 'L' ? 0 : 1]
+  return pMap.get(curr)[mv === 'L' ? 0 : 1]
 }, loc)), new Map())
 
 const getSteps = (start, cond) => {
-  let steps = 0
-  while (!cond(start)) {
-    start = map.get(start)
-    steps++
-  }
+  for (var steps = 0; !cond(start); steps++) start = map.get(start)
   return steps
 }
 

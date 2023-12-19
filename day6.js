@@ -4,9 +4,9 @@ const PART_2 = true
 const input = daySix.split('\n').map(l => l.split(':')[1].split(' ').filter(n => n))
 const [time, dist] = input.map((l) => PART_2 ? [Number(l.join(''))] : l.map((n) => Number(n)))
 
-const out = time.reduce((acc, t, i) => {
+const out = time.reduce((waysToBeat, t, i) => {
   const p = (t + Math.sqrt((t**2) - (4 * dist[i]) - 4)) / (2 * t)
-  return acc * Math.abs(Math.ceil(t * p) - Math.ceil(t * (1 - p)))
+  return waysToBeat * Math.ceil(t * p) - Math.ceil(t * (1 - p))
 }, 1)
 
 console.log(out)
@@ -17,5 +17,5 @@ console.log(out)
 // d = distance to beat in order to hold the record
 // solve for p with tp(t(1 - p)) - d = 1 which, using the quadratic formula, implies
 // p = (t +/- sqrt(t^2 - 4d - 4))/2t
-// plug m and t into the following formula to get total spread:
-// spread = |ceil(tp) - ceil(t(1 - p))|
+// plug m and t into the following formula to get the number of ways you can beat the record holder, w:
+// w = |ceil(tp) - ceil(t(1 - p))|
