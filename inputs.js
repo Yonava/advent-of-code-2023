@@ -1739,6 +1739,10 @@ humidity-to-location map:
 60 56 37
 56 93 4`
 
+module.exports.daySix =
+`Time:        41     66     72     66
+Distance:   244   1047   1228   1040`
+
 module.exports.daySeven =
 `T6JTT 716
 8J29Q 523

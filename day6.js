@@ -1,21 +1,21 @@
-const input =
-`Time:        41     66     72     66
-Distance:   244   1047   1228   1040`.split('\n')
+const { daySix } = require('./inputs')
+const PART_2 = true
 
-const time = parseInt(input[0].split(':')[1].split('').filter(n => !isNaN(parseInt(n))).join(''))
-const dist = parseInt(input[1].split(':')[1].split('').filter(n => !isNaN(parseInt(n))).join(''))
+const input = daySix.split('\n').map(l => l.split(':')[1].split(' ').filter(n => n))
+const [time, dist] = input.map((l) => PART_2 ? [Number(l.join(''))] : l.map((n) => Number(n)))
 
-const spreads = []
+const out = time.reduce((acc, t, i) => {
+  const p = (t + Math.sqrt((t**2) - (4 * dist[i]) - 4)) / (2 * t)
+  return acc * Math.abs(Math.ceil(t * p) - Math.ceil(t * (1 - p)))
+}, 1)
 
-// time.forEach((raceTime, raceIndex) => {
-//   let raceSpread = 0
-//   for (let i = 0; i < raceTime; i++) {
-//     const remainingTime = raceTime - i
-//     const raceDist = remainingTime * i
-//     if (raceDist > dist[raceIndex]) raceSpread++
-//     else if (raceSpread) break
-//   }
-//   spreads.push(raceSpread)
-// })
+console.log(out)
 
-// console.log(spreads.reduce((acc, curr) => acc * curr))
+// for the general case where
+// t = total time in race,
+// p = uniform between [0, 1] where 0 is 0% spent charging and 1 is 100% spent charging,
+// d = distance to beat in order to hold the record
+// solve for p with tp(t(1 - p)) - d = 1 which, using the quadratic formula, implies
+// p = (t +/- sqrt(t^2 - 4d - 4))/2t
+// plug m and t into the following formula to get total spread:
+// spread = |ceil(tp) - ceil(t(1 - p))|
