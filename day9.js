@@ -1,6 +1,6 @@
 const { dayNine, dayNineSm } = require('./inputs')
 
-const lines = dayNine.split('\n').map(i => i.split(' ').map(i => Number(i)))
+const lines = dayNineSm.split('\n').map(i => i.split(' ').map(i => Number(i)))
 
 const cumulative = []
 
@@ -13,9 +13,12 @@ for (const line of lines) {
     if (!next.length) next = [0]
     levels.push(next)
   } while (!levels.at(-1).every(num => num === 0))
+  // levels.shift()
   cumulative.push(levels)
 }
 
-const out = cumulative.reduce((total, line) => total + line.reduce((acc, curr) => acc + curr.at(-1), 0), 0)
+console.log(cumulative)
+
+const out = cumulative.reduce((total, line) => total + line.reduce((acc, curr) => acc + curr.at(0), 0), 0)
 
 console.log(out)

@@ -1,4 +1,5 @@
 const { dayOne } = require('./inputs')
+const PART_2 = true
 
 const wordMap = {
   'one': '1',
@@ -19,12 +20,14 @@ const decode = (str) => {
   const strArr = str.split('')
 
   // start of part 2 block
-  words.forEach((word) => {
-    const firstIndex = str.indexOf(word)
-    if (firstIndex === -1) return
-    strArr[firstIndex] = wordMap[word]
-    strArr[str.lastIndexOf(word)] = wordMap[word]
-  })
+  if (PART_2) {
+    words.forEach((word) => {
+      const firstIndex = str.indexOf(word)
+      if (firstIndex === -1) return
+      strArr[firstIndex] = wordMap[word]
+      strArr[str.lastIndexOf(word)] = wordMap[word]
+    })
+  }
   // end of part 2 block
 
   return parseInt(strArr.find(isNum) + strArr.findLast(isNum))
