@@ -38,9 +38,9 @@ while (pipes[curr[0]][curr[1]] !== 'S') {
   const [row, col] = curr
   const currentPipe = pipes[row][col]
   const pipeConns = conns[currentPipe]
-  const adjustment = pipeConns.find(([r, c]) => rcStr(r + row, c + col) !== prev)
+  const adjustment = pipeConns.find(([r, c]) => !visited.has(rcStr(r + row, c + col)))
   visited.add(rcStr(...curr))
   curr = adjustment.map((adj, i) => adj + curr[i])
 }
 
-console.log(visited.size + 1)
+console.log((visited.size + 1) / 2)
