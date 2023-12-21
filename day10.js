@@ -32,18 +32,15 @@ for (let row = 0; row < pipes.length; row++) {
 const rcStr = (r, c) => `${r},${c}`
 
 let curr = [21, 30];
-let prev = rcStr(21, 29);
-let s = 0
+const visited = new Set()
 
 while (pipes[curr[0]][curr[1]] !== 'S') {
   const [row, col] = curr
   const currentPipe = pipes[row][col]
   const pipeConns = conns[currentPipe]
   const adjustment = pipeConns.find(([r, c]) => rcStr(r + row, c + col) !== prev)
-  console.log('go to:', adjustment.map((adj, i) => adj + curr[i]))
-  prev = rcStr(...curr)
+  visited.add(rcStr(...curr))
   curr = adjustment.map((adj, i) => adj + curr[i])
-  s++
 }
 
-console.log(Math.floor(s / 2) + 1)
+console.log(visited.size + 1)
