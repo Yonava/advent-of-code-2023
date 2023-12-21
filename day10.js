@@ -17,8 +17,9 @@ const conns = {
 }
 
 // parse pipe system
-const pipes = dayTen.split('\n').map(l => l.split(''))
+const pipes = dayTenSm.split('\n').map(l => l.split(''))
 
+// find starting coordinates
 let startCoords;
 for (let row = 0; row < pipes.length; row++) {
   for (let col = 0; col < pipes[0].length; col++) {
@@ -28,12 +29,11 @@ for (let row = 0; row < pipes.length; row++) {
   }
   if (startCoords) break
 }
-// console.log(startCoords)
 
+// row/col to string helper to map coordinate tuple into a primitive
 const rcStr = (r, c) => `${r},${c}`
 
-// 21 30
-let curr = [21, 30];
+let curr = [startCoords[0], startCoords[1] + 1];
 const visited = new Set()
 
 while (pipes[curr[0]][curr[1]] !== 'S') {
@@ -45,24 +45,21 @@ while (pipes[curr[0]][curr[1]] !== 'S') {
   curr = adjustment.map((adj, i) => adj + curr[i])
 }
 
-visited.add(rcStr(21, 29))
+visited.add(rcStr(...startCoords))
 
 // part 1
-console.log((visited.size) / 2)
+console.log('Part 1:', (visited.size) / 2)
 
 // ray casting
 const isInside = (row, col) => {
   return pipes[row].slice(col).reduce((acc, curr, i) => {
-    return '|JLS'.includes(curr) && visited.has(rcStr(row, col + i)) ? acc + 1 : acc
+    return '|F7'.includes(curr) && visited.has(rcStr(row, col + i)) ? acc + 1 : acc
   }, 0) % 2 === 1
 }
 
-let area = 0
-for (let row = 0; row < pipes.length; row++) {
-  for (let col = 0; col < pipes[0].length; col++) {
-    if (!visited.has(rcStr(row, col)) && isInside(row, col)) area++
-  }
-}
+const out = pipes.reduce((total, row, rowI) => total + row.reduce((acc, _, colI) => {
+  return !visited.has(rcStr(rowI, colI)) && isInside(rowI, colI) ? acc + 1 : acc
+}, 0), 0)
 
 // part 2
-console.log(area)
+console.log('Part 2:', out)
