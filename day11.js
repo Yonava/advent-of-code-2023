@@ -1,25 +1,31 @@
 const { dayEleven, dayElevenSm } = require('./inputs')
 
-const input = dayElevenSm.split('\n').map(l => l.split(''))
+const input = dayEleven.split('\n').map(l => l.split(''))
 
-const getDist = ([x1, y1], [x2, y2]) => Math.abs(x2 - x1) + Math.abs(y2 - y1)
+const colFaults = []
+const rowFaults = []
 
-// row order traversal
-for (let i = input.length - 1; i >= 0; i--) {
-  const filtered = input[i].filter(x => x === '#')
-  if (!filtered.length) input.splice(i, 0, Array(input[0].length).fill('.'))
+let tolls = 0
+
+const getDist = ([x1, y1], [x2, y2]) => {
+  const dist = Math.abs(x2 - x1) + Math.abs(y2 - y1)
+  const [minX, maxX, minY, maxY] = [Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2)]
+  const rToll = rowFaults.reduce((acc, curr) => curr > minX && curr < maxX ? acc + 1 : acc, 0)
+  const cToll = colFaults.reduce((acc, curr) => curr > minY && curr < maxY ? acc + 1 : acc, 0)
+  tolls += rToll + cToll
+  return dist
 }
 
-// col order traversal
-for (let i = input[0].length - 1; i >= 0; i--) {
+for (let i = 0; i < input[0].length; i++) {
   const colArr = []
-  for (let j = 0; j < input.length; j++) {
-    colArr.push(input[i][j])
-  }
-  console.log(colArr.every(i => i === '.'))
+  for (let j = 0; j < input.length; j++) colArr.push(input[j][i])
+  if (colArr.every(i => i === '.')) colFaults.push(i)
 }
 
-// console.log(input)
+for (let i = 0; i < input.length; i++) {
+  const filtered = input[i].filter(x => x === '#')
+  if (!filtered.length) rowFaults.push(i)
+}
 
 let id = 1
 const pos = new Map()
@@ -43,4 +49,4 @@ for (const [key1, _] of pos) {
 
 const out = combos.reduce((acc, [x, y]) => acc + getDist(pos.get(x), pos.get(y)), 0)
 
-console.log(out)
+console.log(out, '+', tolls, '=', out + tolls * 999_999)
