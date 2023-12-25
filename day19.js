@@ -6,15 +6,7 @@ const parseWorkflow = (str) => {
   const otherwise = ins.pop()
   const conditions = ins.map(i => i.split(':'))
 
-  return {
-    name,
-    fn: (obj) => {
-      for (const [cond, sendTo] of conditions) {
-        if (eval(`obj.${cond}`)) return sendTo
-      }
-      return otherwise
-    },
-  }
+  return { name, fn: obj => conditions.find(([cond]) => eval(`obj.${cond}`))?.[1] ?? otherwise }
 }
 
 const parseObj = (str) => str.slice(1, -1).split(',').reduce((acc, curr) => {
@@ -27,9 +19,10 @@ const [workflows, objs] = dayNineteen.split('\n\n').map((inp, i) => inp.split('\
 }))
 
 const figureOut = (obj, wf = workflows.find(({ name }) => name === 'in')) => {
-  if (wf.fn(obj) === 'A') return true
-  else if (wf.fn(obj) === 'R') return false
-  return figureOut(obj, workflows.find(({ name }) => name === wf.fn(obj)))
+  const res = wf.fn(obj)
+  if (res === 'A') return true
+  else if (res === 'R') return false
+  return figureOut(obj, workflows.find(({ name }) => name === res))
 }
 
 const out = objs
