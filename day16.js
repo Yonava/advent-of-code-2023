@@ -42,6 +42,35 @@ const dfs = async (x, y, dir) => {
   dfs(x + dirs[dir][1], y + dirs[dir][0], dir)
 }
 
-dfs(0, 0, 'e')
+// PART 2
 
-console.log('done', tilesHit.size)
+const trials = []
+for (let i = 0; i < maze.length; i++) {
+  dfs(0, i, 'e')
+  trials.push(tilesHit.size)
+  tilesHit.clear()
+  visited.clear()
+}
+
+for (let i = 0; i < maze.length; i++) {
+  dfs(maze[0].length - 1, i, 'w')
+  trials.push(tilesHit.size)
+  tilesHit.clear()
+  visited.clear()
+}
+
+for (let i = 0; i < maze[0].length; i++) {
+  dfs(i, 0, 's')
+  trials.push(tilesHit.size)
+  tilesHit.clear()
+  visited.clear()
+}
+
+for (let i = 0; i < maze[0].length; i++) {
+  dfs(i, maze[0].length - 1, 'n')
+  trials.push(tilesHit.size)
+  tilesHit.clear()
+  visited.clear()
+}
+
+console.log('done', Math.max(...trials))
